@@ -1,5 +1,6 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { getTodos } from "./todoAPI";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { API_BASE_URL, TODOS_ENDPOINT } from '../../../services/api';
 
 export interface Todo {
     id: number
@@ -15,6 +16,11 @@ export type SortProperty = keyof Todo
 
 interface Sort {
     order: 1 | -1
+    property: SortProperty
+}
+
+interface SortParameters {
+    order?: 1 | -1
     property: SortProperty
 }
 
@@ -37,9 +43,11 @@ export const todosSlice = createSlice({
     name: 'todos',
     initialState,
     reducers: {
-        toggleSortOrder(state, { payload }: PayloadAction<SortProperty>) {
-            const property = payload
-            const sortOrder = state.sort.property === property ? state.sort.order : 1;
+        toggleSortOrder(state, { payload }: PayloadAction<SortParameters>) {
+            const { property, order } = payload
+            let sortOrder = state.sort.property === property ? state.sort.order : 1;
+            //TODO - test this
+            if (order) sortOrder = order === 1 ? -1 : 1
             state.todos = [...state.todos].sort((a, b) => sortOrder * (a[property] > b[property] ? 1 : -1));
             state.sort.order = sortOrder === 1 ? -1 : 1
             state.sort.property = property
@@ -54,6 +62,13 @@ export const todosSlice = createSlice({
         deleteTodo(state, { payload }: PayloadAction<number>) {
             const todoId = payload
             state.todos = state.todos.filter(todo => todo.id !== todoId);;
+        },
+        //TODO - test this
+        addTodo(state, { payload }: PayloadAction<string>) {
+            let highestId = state.todos.reduce((maxId, todo) => {
+                return todo.id > maxId ? todo.id : maxId;
+            }, 0);
+            state.todos.push({ id: highestId + 1, title: payload, completed: false })
         }
     },
     extraReducers: (builder) => {
@@ -68,6 +83,17 @@ export const todosSlice = createSlice({
     }
 })
 
-export const { toggleSortOrder, completeTodo, deleteTodo } = todosSlice.actions
+export const { toggleSortOrder, completeTodo, deleteTodo, addTodo } = todosSlice.actions
 
 export default todosSlice.reducer
+
+export const getTodos = createAsyncThunk('todos/getTodos', async (_, thunkAPI) => {
+    try {
+        const url = `${API_BASE_URL}${TODOS_ENDPOINT}`;
+        const { data } = await axios.get<ApiTodo[]>(url);
+        const modifiedData = data.map(({ userId, ...rest }) => rest);
+        return modifiedData as Todo[];
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+})
