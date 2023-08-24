@@ -47,7 +47,7 @@ const TodoAddForm = () => {
     dispatch(toggleSortOrder({ property: sort.property, order: sort.order }));
     setTitle("");
   };
-
+  
   return (
     <>
       <Alert
