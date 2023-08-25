@@ -1,5 +1,5 @@
 import { AnyAction, ThunkMiddleware, configureStore } from "@reduxjs/toolkit";
-import todosReducer, { toggleSortOrder, completeTodo, deleteTodo, getTodos, TodoState, addTodo, Todo } from "./todosSlice";
+import todosReducer, { toggleSortOrder, completeTodo, deleteTodo, getTodos, TodoState, addTodo } from "./todosSlice";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
