@@ -36,7 +36,7 @@ describe("TodoAddForm", () => {
     });
   });
 
-  it("displays an error when title is empty", () => {
+  test("displays an error when title is empty", () => {
     render(
       <Provider store={store}>
         <TodoAddForm />
@@ -50,7 +50,7 @@ describe("TodoAddForm", () => {
     expect(errorMessage).toBeInTheDocument();
   });
 
-  it("displays an error when title already exists", () => {
+  test("displays an error when title already exists", () => {
     render(
       <Provider store={store}>
         <TodoAddForm />
@@ -70,7 +70,7 @@ describe("TodoAddForm", () => {
     expect(errorMessage).toBeInTheDocument();
   });
 
-  it("displays an error when todos are still loading", () => {
+  test("displays an error when todos are still loading", () => {
     store = configureStore({
       reducer: {
         todos: todosReducer,
@@ -96,7 +96,7 @@ describe("TodoAddForm", () => {
     expect(errorMessage).toBeInTheDocument();
   });
 
-  it("handles adding a new todo", () => {
+  test("handles adding a new todo", () => {
     let { property, order } = store.getState().todos.sort;
 
     render(

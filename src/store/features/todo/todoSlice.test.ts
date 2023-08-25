@@ -32,7 +32,7 @@ describe('todosSlice', () => {
         });
     });
 
-    it('should handle toggleSortOrder by title', () => {
+    test('should handle toggleSortOrder by title', () => {
 
         store.dispatch(toggleSortOrder({ property: 'title' }));
         const sortedAsc = store.getState().todos.todos;
@@ -44,7 +44,7 @@ describe('todosSlice', () => {
 
     });
 
-    it('should handle toggleSortOrder by id', () => {
+    test('should handle toggleSortOrder by id', () => {
 
         store.dispatch(toggleSortOrder({ property: 'id' }));
         const sortedAsc = store.getState().todos.todos;
@@ -56,7 +56,7 @@ describe('todosSlice', () => {
 
     });
 
-    it('should handle toggleSortOrder by completed', () => {
+    test('should handle toggleSortOrder by completed', () => {
 
         store.dispatch(toggleSortOrder({ property: 'completed' }));
         const sortedAsc = store.getState().todos.todos;
@@ -68,7 +68,7 @@ describe('todosSlice', () => {
 
     });
 
-    it('should change the property and sort by asc if a new property if provided', () => {
+    test('should change the property and sort by asc if a new property if provided', () => {
 
         store.dispatch(toggleSortOrder({ property: 'completed' }));
         expect(store.getState().todos.sort.property).not.toEqual(initialState.sort.property);
@@ -76,7 +76,7 @@ describe('todosSlice', () => {
 
     });
 
-    it('should change the sort order if only property is provided', () => {
+    test('should change the sort order if only property is provided', () => {
 
         let { property, order } = store.getState().todos.sort
         store.dispatch(toggleSortOrder({ property }));
@@ -85,7 +85,7 @@ describe('todosSlice', () => {
 
     });
 
-    it('should not change the sort order if both property and order are the same as the previous values', () => {
+    test('should not change the sort order if both property and order are the same as the previous values', () => {
         let { property, order } = store.getState().todos.sort
         store.dispatch(toggleSortOrder({ property, order }));
 
@@ -93,20 +93,20 @@ describe('todosSlice', () => {
         expect(store.getState().todos.sort.order).toEqual(order);
     });
 
-    it('should handle completeTodo', () => {
+    test('should handle completeTodo', () => {
         store.dispatch(completeTodo(1));
         const updatedTodos = store.getState().todos.todos;
         expect(updatedTodos[0].completed).toBe(true);
     });
 
-    it('should handle deleteTodo', () => {
+    test('should handle deleteTodo', () => {
         store.dispatch(deleteTodo(1));
         const remainingTodos = store.getState().todos.todos;
         expect(remainingTodos.length).toBe(1);
         expect(remainingTodos[0].id).toBe(2);
     });
 
-    it('should handle addTodo', () => {
+    test('should handle addTodo', () => {
         store.dispatch(addTodo('Todo 3'));
         const updatedTodos = store.getState().todos.todos;
         expect(updatedTodos.length).toBe(initialState.todos.length + 1);
@@ -139,7 +139,7 @@ describe('async actions', () => {
         mockAxios.reset();
     });
 
-    it('should fetch todos successfully', async () => {
+    test('should fetch todos successfully', async () => {
 
         mockAxios.onGet(`${API_BASE_URL}${TODOS_ENDPOINT}`).reply(200, mockApiResponse);
         await store.dispatch(getTodos());
@@ -150,14 +150,14 @@ describe('async actions', () => {
         expect(store.getState().todos.status).toBe('success');
     });
 
-    it('should show loading status when fetching todos', async () => {
+    test('should show loading status when fetching todos', async () => {
         mockAxios.onGet(`${API_BASE_URL}${TODOS_ENDPOINT}`).reply(200, mockApiResponse);
         const promise = store.dispatch(getTodos());
         expect(store.getState().todos.status).toBe('loading');
         await promise;
     });
 
-    it('should handle fetch todos error', async () => {
+    test('should handle fetch todos error', async () => {
         const mockError = new Error('API error');
         mockAxios.onGet(`${API_BASE_URL}${TODOS_ENDPOINT}`).reply(500, mockError);
 

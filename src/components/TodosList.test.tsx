@@ -26,7 +26,7 @@ describe("TodosList", () => {
     },
   };
 
-  it("renders the loading spinner when status is loading", () => {
+  test("renders the loading spinner when status is loading", () => {
     store = configureStore({
       reducer: {
         todos: todosReducer,
@@ -44,7 +44,7 @@ describe("TodosList", () => {
     expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
   });
 
-  it("renders todos when status is success", async () => {
+  test("renders todos when status is success", async () => {
     store = configureStore({
       reducer: {
         todos: todosReducer,
@@ -66,7 +66,7 @@ describe("TodosList", () => {
     });
   });
 
-  it("should toggle sort by id when id tab is clicked", async () => {
+  test("should toggle sort by id when id tab is clicked", async () => {
     store = configureStore({
       reducer: {
         todos: todosReducer,
@@ -92,7 +92,7 @@ describe("TodosList", () => {
     expect(sortedTodoElements[1]).toHaveTextContent("2");
   });
 
-  it("should toggle sort by title when title tab is clicked", async () => {
+  test("should toggle sort by title when title tab is clicked", async () => {
     store = configureStore({
       reducer: {
         todos: todosReducer,
@@ -118,7 +118,7 @@ describe("TodosList", () => {
     expect(sortedTodoElements[1]).toHaveTextContent("Todo 1");
   });
 
-  it("should toggle sort by completed when completed tab is clicked", async () => {
+  test("should toggle sort by completed when completed tab is clicked", async () => {
     store = configureStore({
       reducer: {
         todos: todosReducer,
@@ -144,7 +144,7 @@ describe("TodosList", () => {
     expect(sortedTodoElements[1]).toHaveTextContent("complete");
   });
 
-  it('displays "Complete" button for todos with completed set to false', async () => {
+  test('displays "Complete" button for todos with completed set to false', async () => {
     store = configureStore({
       reducer: {
         todos: todosReducer,
@@ -171,7 +171,7 @@ describe("TodosList", () => {
     expect(completedChip).toBeInTheDocument();
   });
 
-  it("completes a todo when Complete button is clicked", async () => {
+  test("completes a todo when Complete button is clicked", async () => {
     store = configureStore({
       reducer: {
         todos: todosReducer,
@@ -197,7 +197,7 @@ describe("TodosList", () => {
     expect(todoItems[1]).toHaveTextContent("completed");
   });
 
-  it("deletes a todo when delete button is clicked", async () => {
+  test("deletes a todo when delete button is clicked", async () => {
     store = configureStore({
       reducer: {
         todos: todosReducer,
