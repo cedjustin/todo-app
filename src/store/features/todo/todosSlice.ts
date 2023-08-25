@@ -46,7 +46,6 @@ export const todosSlice = createSlice({
         toggleSortOrder(state, { payload }: PayloadAction<SortParameters>) {
             const { property, order } = payload
             let sortOrder = state.sort.property === property ? state.sort.order : 1;
-            //TODO - test this
             if (order) sortOrder = order === 1 ? -1 : 1
             state.todos = [...state.todos].sort((a, b) => sortOrder * (a[property] > b[property] ? 1 : -1));
             state.sort.order = sortOrder === 1 ? -1 : 1
@@ -63,7 +62,6 @@ export const todosSlice = createSlice({
             const todoId = payload
             state.todos = state.todos.filter(todo => todo.id !== todoId);;
         },
-        //TODO - test this
         addTodo(state, { payload }: PayloadAction<string>) {
             let highestId = state.todos.reduce((maxId, todo) => {
                 return todo.id > maxId ? todo.id : maxId;

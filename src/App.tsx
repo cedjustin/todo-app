@@ -10,10 +10,10 @@ import TodoAddForm from "./components/TodoAddForm";
 
 function App() {
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="w-1/2">
         <Card className="w-full">
-          <CardHeader floated={false} shadow={false} className="rounded-none">
+          <CardHeader floated={false} shadow={false} className="rounded-none pb-5">
             <div>
               <Typography variant="h5" color="blue-gray">
                 Todo App
