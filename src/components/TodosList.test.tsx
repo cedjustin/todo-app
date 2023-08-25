@@ -217,7 +217,6 @@ describe("TodosList", () => {
     );
 
     fireEvent.click(screen.getAllByTestId("delete")[0]);
-
     const todoItems = screen.getAllByTestId("todo-item");
     expect(todoItems.length).toBe(1);
   });

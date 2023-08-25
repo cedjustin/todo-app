@@ -1,5 +1,5 @@
 import { AnyAction, ThunkMiddleware, configureStore } from "@reduxjs/toolkit";
-import todosReducer, { toggleSortOrder, completeTodo, deleteTodo, getTodos, TodoState } from "./todosSlice";
+import todosReducer, { toggleSortOrder, completeTodo, deleteTodo, getTodos, TodoState, addTodo, Todo } from "./todosSlice";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
@@ -68,20 +68,53 @@ describe('todosSlice', () => {
 
     });
 
-    it('should handle completeTodo', () => {
+    it('should change the property and sort by asc if a new property if provided', () => {
 
+        store.dispatch(toggleSortOrder({ property: 'completed' }));
+        expect(store.getState().todos.sort.property).not.toEqual(initialState.sort.property);
+        expect(store.getState().todos.sort.order).not.toEqual(1);
+
+    });
+
+    it('should change the sort order if only property is provided', () => {
+
+        let { property, order } = store.getState().todos.sort
+        store.dispatch(toggleSortOrder({ property }));
+
+        expect(store.getState().todos.sort.order).not.toEqual(order);
+
+    });
+
+    it('should not change the sort order if both property and order are the same as the previous values', () => {
+        let { property, order } = store.getState().todos.sort
+        store.dispatch(toggleSortOrder({ property, order }));
+
+        expect(store.getState().todos.sort.property).toEqual(property);
+        expect(store.getState().todos.sort.order).toEqual(order);
+    });
+
+    it('should handle completeTodo', () => {
         store.dispatch(completeTodo(1));
         const updatedTodos = store.getState().todos.todos;
-
         expect(updatedTodos[0].completed).toBe(true);
     });
 
     it('should handle deleteTodo', () => {
         store.dispatch(deleteTodo(1));
         const remainingTodos = store.getState().todos.todos;
-
         expect(remainingTodos.length).toBe(1);
         expect(remainingTodos[0].id).toBe(2);
+    });
+
+    it('should handle addTodo', () => {
+        store.dispatch(addTodo('Todo 3'));
+        const updatedTodos = store.getState().todos.todos;
+        expect(updatedTodos.length).toBe(initialState.todos.length + 1);
+        
+        let highestId = initialState.todos.reduce((maxId, todo) => {
+            return todo.id > maxId ? todo.id : maxId;
+        }, 0);
+        expect(updatedTodos[updatedTodos.length - 1].id).toBe(highestId + 1);
     });
 });
 
